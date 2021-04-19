@@ -5,7 +5,9 @@
 %{
     int yylex(void); /* -Wall : avoid implicit call */
     int yyerror(const char*); /* same for bison */
+  
 %}
+
 %token NOMBRE
 %token PT_VIRG
 %left '+' '-'
@@ -15,6 +17,7 @@
 %start resultat /* axiom */
 %%
 resultat: programme ;
+
 programme:
 expression PT_VIRG programme
 | ''

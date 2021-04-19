@@ -8,29 +8,25 @@
 %}
 %token NOMBRE
 %token PT_VIRG
-%start resultat /* axiom */
+%left '+' '-'
+%left '*' '/'
+%nonassoc MOINSU
 
+%start resultat /* axiom */
 %%
 resultat: programme ;
 programme:
 expression PT_VIRG programme
 | ''
-
+;
 
 expression:
-expression '+' terme
-| expression '-' terme
-| terme
-;
-
-terme:
-terme '*' facteur
-| facteur
-;
-
-facteur:
+expression '+' expression
+| expression '-' expression
+| expression '*' expression
+| expression '/' expression
 | '(' expression ')'
-| '-' facteur
+| '-' expression %prec MOINSU
 | NOMBRE
 ;
 %%

@@ -10,9 +10,25 @@
 
 %token NOMBRE
 %token PT_VIRG
+%token BOOL
+%token EGALE_EGALE
+%token PAS_EGALE
+%token INF
+%token INF_EGAL
+%token SUP
+%token SUP_EGAL
+%token NEGATION
+
+
+%left EGALE_EGALE PAS_EGALE
+%left  INF INF_EGAL SUP SUP_EGAL
+
+
 %left '+' '-'
 %left '*' '/'
+
 %nonassoc MOINSU
+%nonassoc NEGATION
 
 %start programme /* axiom */
 %%
@@ -33,9 +49,18 @@ expression '+' expression
 | expression '-' expression
 | expression '*' expression
 | expression '/' expression
+| expression  EGALE_EGALE expression
+| expression  PAS_EGALE expression
+| expression  INF expression
+| expression  SUP expression
+| expression  SUP_EGAL expression
+| expression  INF_EGAL expression
 | '(' expression ')'
 | '-' expression %prec MOINSU
+| NEGATION  expression
 | NOMBRE
+| BOOL
+
 
 
 ;

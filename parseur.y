@@ -14,13 +14,18 @@
 %left '*' '/'
 %nonassoc MOINSU
 
-%start resultat /* axiom */
+%start programme /* axiom */
 %%
-resultat: programme ;
+
 
 programme:
-expression PT_VIRG programme
-| ''
+command
+|
+command programme
+;
+
+command:
+expression PT_VIRG 
 ;
 
 expression:
@@ -31,6 +36,8 @@ expression '+' expression
 | '(' expression ')'
 | '-' expression %prec MOINSU
 | NOMBRE
+
+
 ;
 %%
 

@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 extern FILE *yyin;
+
+
+int yyparse(void);
+
 int main(int argc, char **argv)
 {
     if (argc > 1)

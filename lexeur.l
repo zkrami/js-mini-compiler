@@ -16,7 +16,8 @@ true|false { printf("lex:: boolean %s\n", yytext); return BOOL; }
 ">="  { printf("lex:: operateur relation  %s\n", yytext); return SUP_EGAL; }
 "<="  { printf("lex:: operateur relation  %s\n", yytext); return INF_EGAL; }
 [a-z][a-zA-Z_]* { printf("lex:: variable %s\n", yytext); return VARIABLE; }
-
+"++" { printf("lex::  incrementation %s\n", yytext); return  INCREMENTATION; }
+"--" { printf("lex::  decrementation %s\n", yytext); return  DECREMENTATION; }
 
 . { printf("lex::char %s\n",yytext); return yytext[0]; } /* other one-char = token, ex. '+' */
 

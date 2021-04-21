@@ -7,7 +7,7 @@
     int yyerror(const char*); /* same for bison */
   
 %}
-
+%token VARIABLE
 %token NOMBRE
 %token PT_VIRG
 %token BOOL
@@ -18,7 +18,7 @@
 %token SUP
 %token SUP_EGAL
 %token NEGATION
-
+%token AFFECTATION
 
 %left EGALE_EGALE PAS_EGALE
 %left  INF INF_EGAL SUP SUP_EGAL
@@ -42,6 +42,11 @@ command programme
 
 command:
 expression PT_VIRG 
+| affectation PT_VIRG
+;
+
+affectation:
+VARIABLE AFFECTATION expression
 ;
 
 expression:
@@ -60,6 +65,9 @@ expression '+' expression
 | NEGATION  expression
 | NOMBRE
 | BOOL
+| VARIABLE
+
+
 
 
 

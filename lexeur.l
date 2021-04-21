@@ -6,6 +6,7 @@
 [0-9]+(.[0-9]+)? { printf("lex::NOMBRE %s\n",yytext); return NOMBRE; }
 ;  { printf("lex::PT_VIRG %s\n", yytext); return PT_VIRG; }
 [ \t\n] { ; } /* ignore space, tab, and line return */
+"="     { printf("lex:: afectation %s\n", yytext); return AFFECTATION; } 
 true|false { printf("lex:: boolean %s\n", yytext); return BOOL; }
 "=="   { printf("lex:: egale %s\n", yytext); return EGALE_EGALE; }
 "!="   { printf("lex:: egale %s\n", yytext); return PAS_EGALE; }
@@ -14,7 +15,7 @@ true|false { printf("lex:: boolean %s\n", yytext); return BOOL; }
 ">"  { printf("lex:: operateur relation  %s\n", yytext); return SUP; }
 ">="  { printf("lex:: operateur relation  %s\n", yytext); return SUP_EGAL; }
 "<="  { printf("lex:: operateur relation  %s\n", yytext); return INF_EGAL; }
-
+[a-z][a-zA-Z_]* { printf("lex:: variable %s\n", yytext); return VARIABLE; }
 
 
 . { printf("lex::char %s\n",yytext); return yytext[0]; } /* other one-char = token, ex. '+' */

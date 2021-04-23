@@ -3,7 +3,7 @@
 #include "parseur.tab.h" /* token constants def. in parseur.y via #define */
 %}
 %%
-(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(e-?[0-9]+)? { printf("lex::NOMBRE %s\n",yytext); return NOMBRE; }
+((([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(e-?[0-9]+)?)|NaN|Infinity { printf("lex::NOMBRE %s\n",yytext); return NOMBRE; }
 ;  { printf("lex::PT_VIRG %s\n", yytext); return PT_VIRG; }
 "="     { printf("lex:: afectation %s\n", yytext); return AFFECTATION; } 
 true|false { printf("lex:: boolean %s\n", yytext); return BOOL; }

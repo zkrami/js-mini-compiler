@@ -21,7 +21,8 @@
 %token AFFECTATION
 %token INCREMENTATION
 %token DECREMENTATION
-
+%token IF 
+%token ELSE
 %left EGALE_EGALE PAS_EGALE
 %left  INF INF_EGAL SUP SUP_EGAL
 
@@ -29,7 +30,7 @@
 %left '+' '-'
 %left '*' '/'
 
-%nonassoc MOINSU
+%nonassoc MOINSU            
 %nonassoc NEGATION
 
 %start programme /* axiom */
@@ -44,7 +45,11 @@ command programme
 
 command:
 expression PT_VIRG 
+| PT_VIRG
+| '{' programme '}'
 | affectation PT_VIRG
+| IF '(' expression ')' command ELSE command
+| IF '(' expression ')' command
 ;
 
 affectation:

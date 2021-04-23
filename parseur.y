@@ -28,7 +28,7 @@
 %token DO
 %token WHILE 
 %token FOR 
-
+%token UNDEFINED
 
 %right AFFECTATION      
 %left OR_OR AND_AND 
@@ -85,6 +85,7 @@ expression '+' expression
 | NOMBRE
 | BOOL
 | VARIABLE
+| UNDEFINED
 
 
 

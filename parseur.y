@@ -23,6 +23,10 @@
 %token DECREMENTATION
 %token IF 
 %token ELSE
+%token OR_OR
+%token AND_AND 
+
+%left OR_OR AND_AND 
 %left EGALE_EGALE PAS_EGALE
 %left  INF INF_EGAL SUP SUP_EGAL
 
@@ -61,6 +65,8 @@ expression '+' expression
 | expression '-' expression
 | expression '*' expression
 | expression '/' expression
+| expression  OR_OR expression
+| expression  AND_AND expression
 | expression  EGALE_EGALE expression
 | expression  PAS_EGALE expression
 | expression  INF expression

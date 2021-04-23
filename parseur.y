@@ -25,12 +25,14 @@
 %token ELSE
 %token OR_OR
 %token AND_AND 
+%token DO
+%token WHILE 
 
+
+%right AFFECTATION      
 %left OR_OR AND_AND 
 %left EGALE_EGALE PAS_EGALE
 %left  INF INF_EGAL SUP SUP_EGAL
-
-
 %left '+' '-'
 %left '*' '/'
 
@@ -51,13 +53,9 @@ command:
 expression PT_VIRG 
 | PT_VIRG
 | '{' programme '}'
-| affectation PT_VIRG
 | IF '(' expression ')' command ELSE command
 | IF '(' expression ')' command
-;
-
-affectation:
-VARIABLE AFFECTATION expression
+| DO command WHILE '(' expression ')'
 ;
 
 expression:
@@ -73,7 +71,8 @@ expression '+' expression
 | expression  SUP expression
 | expression  SUP_EGAL expression
 | expression  INF_EGAL expression
-| '(' expression ')'
+| '(' expression ')' 
+|  VARIABLE AFFECTATION expression 
 | '-' expression %prec MOINSU
 | NEGATION  expression
 | INCREMENTATION VARIABLE

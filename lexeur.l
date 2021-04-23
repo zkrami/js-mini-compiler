@@ -18,6 +18,8 @@ true|false { printf("lex:: boolean %s\n", yytext); return BOOL; }
 "||" { printf("lex:: operateur relation  %s\n", yytext); return OR_OR; }
 if  { printf("lex::  if  %s\n", yytext); return  IF; }
 else  { printf("lex::  else  %s\n", yytext); return  ELSE; }
+do  { printf("lex::  do  %s\n", yytext); return  DO; }
+while  { printf("lex::  do  %s\n", yytext); return  WHILE; }
 [a-z][a-zA-Z_]* { printf("lex:: variable %s\n", yytext); return VARIABLE; }
 "++" { printf("lex::  incrementation %s\n", yytext); return  INCREMENTATION; }
 "--" { printf("lex::  decrementation %s\n", yytext); return  DECREMENTATION; }

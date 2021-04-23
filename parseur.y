@@ -27,6 +27,7 @@
 %token AND_AND 
 %token DO
 %token WHILE 
+%token FOR 
 
 
 %right AFFECTATION      
@@ -55,7 +56,9 @@ expression PT_VIRG
 | '{' programme '}'
 | IF '(' expression ')' command ELSE command
 | IF '(' expression ')' command
-| DO command WHILE '(' expression ')'
+| DO command WHILE '(' expression ')'   
+| WHILE '(' expression ')' command 
+| FOR '(' expression PT_VIRG expression PT_VIRG expression ')' command 
 ;
 
 expression:

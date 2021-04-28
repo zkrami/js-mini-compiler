@@ -1,1 +1,1 @@
-do x = 10; while (x < 20); 
+dasddo x = 10; while (x < 20); 

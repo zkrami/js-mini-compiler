@@ -13,7 +13,7 @@ struct _tree {
 
 typedef struct _tree* AST;
 
-AST newQuaternary AST(char *car, AST node1, AST node2 , AST node3 , AST node4);
+AST newQuaternaryAST(char *car, AST node1, AST node2 , AST node3 , AST node4);
 
 AST newTernaryAST(char *car, AST node1, AST node2 , AST node3 ); 
 
@@ -31,6 +31,9 @@ AST newBooleanLeafAST(int val);
 
 /* create an AST leaf from a variable */
 AST newVariableLeafAST(char* val);
+
+/* create an AST leaf from a constant (undefined , null , Infinity , Nan) */
+AST newConstantLeafAST(char* val);
 
 /* delete an AST */
 void freeAST(AST t);

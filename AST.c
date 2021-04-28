@@ -45,7 +45,7 @@ AST newTernaryAST(char *car, AST node1, AST node2 , AST node3 )
 }
 
 
-AST newQuaternary AST(char *car, AST node1, AST node2 , AST node3 , AST node4)
+AST newQuaternaryAST(char *car, AST node1, AST node2 , AST node3 , AST node4)
 {
   AST t=(struct _tree*) malloc(sizeof(struct _tree));
   if (t!=NULL){
@@ -83,6 +83,7 @@ void printAST(AST t)
    if(t!=NULL)
    { 
      printf("arbre : %s ", t->car);
+     
      AST c = t->childs; 
      while(c !=NULL)
      {
@@ -124,3 +125,14 @@ AST newVariableLeafAST(char* val){
   return t; 
   
 }
+
+AST newConstantLeafAST(char* val){
+  AST t=(struct _tree*) malloc(sizeof(struct _tree));  
+  if (t!=NULL){	
+    t->car = "var"; 
+    t->var_name=val;    
+  } 
+  return t; 
+  
+}
+

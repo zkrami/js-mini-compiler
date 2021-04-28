@@ -1,5 +1,6 @@
 %{
 #include <stdio.h> /* printf */
+#include "AST.h" 
 #include "parseur.tab.h" /* token constants def. in parseur.y via #define */
 %}
 %%

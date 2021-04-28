@@ -4,20 +4,23 @@
 /* usage: ./main < input.txt */
 #include <stdio.h>
 #include <stdlib.h>
+#include "AST.h"
 extern FILE *yyin;
 
 
-int yyparse(void);
+int yyparse(AST* pt);
 
 int main(int argc, char **argv)
 {
+    AST result = NULL ; 
     if (argc > 1)
     {
         yyin = fopen(argv[1], "r");
     }
-    if (yyparse() == 0)
-    {                                      /* yyparse calls yylex */
-        printf("\nParsing:: syntax OK\n"); /* reached if parsing folllows the grammar */
+    if (yyparse(&result) == 0)
+    {                            
+        printAST(result); 
+        printf("\nParsing:: syntax OK\n"); 
     }
     exit(EXIT_SUCCESS);
 }

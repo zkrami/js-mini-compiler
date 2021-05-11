@@ -82,7 +82,7 @@ void printAST(AST t)
 
    if(t!=NULL)
    { 
-     printf("arbre : %s ", t->car);
+     printf(" %s ", t->car);
      
      AST c = t->childs; 
      while(c !=NULL)

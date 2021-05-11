@@ -6,16 +6,15 @@
     #include "AST.h" 
     int yylex(void); /* -Wall : avoid implicit call */
     int yyerror(AST* pt, const char*); /* same for bison */
-
+    #define NULL 0
 %}
 %parse-param {AST* pt}
 %union {
     AST node;
     double number;
 };
-%type <node> programme 
-%type <node> command
-%type <node> expression
+%type <node> programme  command identifiant expression decl_args arguements
+
 
 %token VARIABLE
 %token NOMBRE
@@ -38,7 +37,9 @@
 %token DO
 %token WHILE 
 %token FOR 
+%token FUNCTION
 %token UNDEFINED
+%token RETURN
 
 %right AFFECTATION      
 %left OR_OR AND_AND 
@@ -58,8 +59,7 @@ resultat: programme { *pt = $1; }  /* axiom */
 
 programme:
 command { $$= newUnaryAST("programme" , $1 ) ;  } 
-|
-command programme { $$= newBinaryAST("programme" , $1 ,  $2) ;  } 
+| command programme { $$= newBinaryAST("programme" , $1 ,  $2) ;  } 
 ;
 
 command:
@@ -71,7 +71,20 @@ expression PT_VIRG { $$= newUnaryAST("command" , $1);  }
 | DO command WHILE '(' expression ')'    { $$ = newBinaryAST("do_while" , $2 , $5); }
 | WHILE '(' expression ')' command { $$ = newBinaryAST("while" , $3 , $5); }
 | FOR '(' expression PT_VIRG expression PT_VIRG expression ')' command  { $$ = newQuaternaryAST("for" , $3 , $5 , $7 , $9 ); }
+| FUNCTION identifiant '(' decl_args ')' '{' programme '}'  { $$ = newTernaryAST("function" , $2 , $4 , $7 ); }
+| RETURN expression PT_VIRG  { $$ = newUnaryAST("return" , $2 ); }
 ;
+decl_args: 
+ %empty { $$ = newUnaryAST("decl_args" , NULL ); }
+| identifiant { $$ = newBinaryAST("decl_args" , $1 , NULL); }
+| identifiant ',' decl_args  { $$ = newBinaryAST("decl_args" , $1 , $3); };
+
+arguements: 
+ %empty  { $$ = newUnaryAST("arguements" , NULL ); }
+| expression  { $$ = newBinaryAST("arguements" , $1 , NULL); }
+| expression ',' arguements   { $$ = newBinaryAST("arguements" , $1 , $3); } 
+
+identifiant: VARIABLE { $$ = newConstantLeafAST("");  }
 
 expression:
 expression '+' expression { $$ = newBinaryAST("+" , $1 , $3); }
@@ -87,16 +100,17 @@ expression '+' expression { $$ = newBinaryAST("+" , $1 , $3); }
 | expression  SUP_EGAL expression { $$ = newBinaryAST(">=" , $1 , $3); }
 | expression  INF_EGAL expression { $$ = newBinaryAST("<=" , $1 , $3); }
 | '(' expression ')'  { $$ = newUnaryAST("()" , $2 ); }
-|  VARIABLE AFFECTATION expression { $$ = newBinaryAST("=" , $1 , $3 ); }
+|  identifiant AFFECTATION expression { $$ = newBinaryAST("=" , $1 , $3 ); }
 | '-' expression %prec MOINSU { $$ = newUnaryAST("u-" , $2 ); }
 | NEGATION  expression { $$ = newUnaryAST("!" , $2 ); }
-| INCREMENTATION VARIABLE { $$ = newUnaryAST("++x" , $2 ); }
-| DECREMENTATION VARIABLE { $$ = newUnaryAST("--x" , $2 ); }
-|  VARIABLE INCREMENTATION { $$ = newUnaryAST("x++" , $2 ); }
-|  VARIABLE DECREMENTATION { $$ = newUnaryAST("x--" , $2 ); }
+| INCREMENTATION identifiant { $$ = newUnaryAST("++x" , $2 ); }
+| DECREMENTATION identifiant { $$ = newUnaryAST("--x" , $2 ); }
+|  identifiant INCREMENTATION { $$ = newUnaryAST("x++" , $1 ); }
+|  identifiant DECREMENTATION { $$ = newUnaryAST("x--" , $1 ); }
+| identifiant '('arguements')' { $$ = newBinaryAST("call" , $1 , $3 ); }
 | NOMBRE { $$ = newNumberLeafAST(0);  }
 | BOOL { $$ = newBooleanLeafAST(0);  }
-| VARIABLE { $$ = newConstantLeafAST("");  }
+| identifiant { $$ = $1; }
 | UNDEFINED  { $$ = newConstantLeafAST("undefined");  }
 
 

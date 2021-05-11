@@ -23,6 +23,8 @@ else  { printf("lex::else  %s\n", yytext); return  ELSE; }
 do  { printf("lex::do  %s\n", yytext); return  DO; }
 while  { printf("lex::while  %s\n", yytext); return  WHILE; }
 for  { printf("lex::for  %s\n", yytext); return  FOR; }
+function { printf("lex::function  %s\n", yytext); return  FUNCTION; }
+return { printf("lex::return  %s\n", yytext); return  RETURN; }
 [a-zA-Z_]+ { printf("lex::variable %s\n", yytext); return VARIABLE; }
 "++" { printf("lex::incrementation %s\n", yytext); return  INCREMENTATION; }
 "--" { printf("lex::decrementation %s\n", yytext); return  DECREMENTATION; }

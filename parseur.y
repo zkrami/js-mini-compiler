@@ -54,7 +54,7 @@
  
 %%
 
-resultat: programme { *pt = $1; }  /* axiom */
+resultat: programme { *pt = newUnaryAST("main" , $1 ) ;  }  /* axiom */
 
 
 programme:

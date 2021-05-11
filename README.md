@@ -12,4 +12,8 @@ Run make to build the project.
 make
 ```
 
+### Parseur 
+Pour tester le parseur tout seul. 
+Après avoir fait un build. 
+`./parseur parser_tests/functions.js`
 

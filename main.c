@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "AST.h"
+#include "compiler.h"
 extern FILE *yyin;
 
 
@@ -18,9 +19,10 @@ int main(int argc, char **argv)
         yyin = fopen(argv[1], "r");
     }
     if (yyparse(&result) == 0)
-    {                            
-        printAST(result); 
-        printf("\nParsing:: syntax OK\n"); 
+    {                  
+        printf("\nParsing:: syntax OK\n");     
+        compile(result); 
+        freeAST(result); 
     }
     exit(EXIT_SUCCESS);
 }

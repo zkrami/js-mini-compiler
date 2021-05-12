@@ -1,7 +1,7 @@
 CFLAGS = -g -Wall
 YACC = bison -d 
 
-all:  parseur 
+all:  compiler 
 
 clean:
 	rm -f parseur *.tab.c *.tab.h lex.yy.c *.yy.c
@@ -18,3 +18,5 @@ lexer: grammer
 parseur: lexer
 	 gcc $(CFLAGS) -o parseur  main.c AST.c parseur.tab.c lex.yy.c
 
+compiler: lexer
+	gcc $(CFLAGS) -o compiler  main.c AST.c parseur.tab.c lex.yy.c compiler.c

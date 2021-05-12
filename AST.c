@@ -69,6 +69,9 @@ void freeAST(AST t)
     while(c!=NULL)
     {
         freeAST(c);
+        if(c->var_name != 0){
+          free(c->var_name); 
+        }
         c=c->next;
     }
        

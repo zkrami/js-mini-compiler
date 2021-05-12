@@ -1,20 +1,9 @@
+CsteBo true
+ConJmp 2
 CsteNb 5
 SetVar x
-GetVar x
-Copy
-CsteNb 1
-AddiNb
-SetVar x
-GetVar x
-Copy
-CsteNb 1
-AddiNb
-SetVar x
+CsteBo false
+ConJmp 2
+CsteNb 2
 SetVar y
-GetVar x
-CsteNb 1
-AddiNb
-Copy
-SetVar x
-SetVar z
 Halt

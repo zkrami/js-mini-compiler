@@ -5,7 +5,7 @@ int is(const char *s, const char *type)
     return !strcmp(s, type);
 }
 
-int generate(AST ast, stringstream& out)
+int generate(AST ast, stringstream &out)
 {
 
     if (ast == NULL)
@@ -20,7 +20,7 @@ int generate(AST ast, stringstream& out)
     if (is(current, "main"))
     {
         lines += generate(ast->childs, out);
-        out <<  "Halt\n" ; 
+        out << "Halt\n";
     }
     else if (is(current, "programme"))
     {
@@ -33,37 +33,37 @@ int generate(AST ast, stringstream& out)
     }
     else if (is(current, "if"))
     {
+         //  IF '(' expression ')' command   { $$ = newBinaryAST("if" , $3 , $5); }
+
+        // @Cast ToBool
+        lines += generate(ast->childs, out);
+
+        stringstream temp1;
+        int tlines = generate(ast->childs->next, temp1);        
+        out << "ConJmp " << tlines << "\n"; // (if size)  
+        lines += tlines;
+        out << temp1.str(); // if code 
+        
     }
     else if (is(current, "if_else"))
     {
 
         //  IF '(' expression ')' command ELSE command  { $$= newTernaryAST("if_else" , $3 , $5 , $7 ); }
 
-
-         // @Cast ToBool
+        // @Cast ToBool
         lines += generate(ast->childs, out);
-        // fprintf(out, "ConJmp \n" );
 
-
-        /*
-
-            ConJmp 3
-            CsteBo False
-            SetVar y
-            Jump 8
-
-
-            GetVar x
-            TypeOf
-            Case
-            Jump 1
-            BoToNb
-            CsteNb 1
-            AddiNb
-            SetVar y
-            Halt
-        */
-       
+        stringstream temp1;
+        int tlines = generate(ast->childs->next, temp1);
+        tlines += 1; // JUMP LINE 
+        out << "ConJmp " << tlines << "\n"; // (if size) + 1 
+        lines += tlines;
+        out << temp1.str(); // if code 
+        stringstream temp2; 
+        tlines = generate(ast->childs->next->next , temp2); 
+        out << "Jump " << tlines << "\n"; // else size 
+        out << temp2.str() ;  // else code 
+        lines += tlines; 
 
     }
     else if (is(current, "do_while"))
@@ -85,28 +85,28 @@ int generate(AST ast, stringstream& out)
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        out << "AddiNb\n"; 
+        out << "AddiNb\n";
         lines += 1;
     }
     else if (is(current, "-"))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        out << "SubsNb\n" ; 
+        out << "SubsNb\n";
         lines += 1;
     }
     else if (is(current, "*"))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        out << "MultNb\n" ; 
+        out << "MultNb\n";
         lines += 1;
     }
     else if (is(current, "/"))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        out <<  "DiviNb\n" ; 
+        out << "DiviNb\n";
         lines += 1;
     }
     else if (is(current, "||"))
@@ -119,42 +119,42 @@ int generate(AST ast, stringstream& out)
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        out <<  "Equals\n" ;
+        out << "Equals\n";
         lines += 1;
     }
     else if (is(current, "!="))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        out << "NotEql\n" ; 
+        out << "NotEql\n";
         lines += 1;
     }
     else if (is(current, "<"))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        out << "LoStNb\n" ; 
+        out << "LoStNb\n";
         lines += 1;
     }
     else if (is(current, ">"))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-         out <<  "GrStNb\n" ; 
+        out << "GrStNb\n";
         lines += 1;
     }
     else if (is(current, ">="))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        out <<  "GrEqNb\n";
+        out << "GrEqNb\n";
         lines += 1;
     }
     else if (is(current, "<="))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        out <<  "LoEqNb\n";
+        out << "LoEqNb\n";
         lines += 1;
     }
     else if (is(current, "()"))
@@ -164,58 +164,58 @@ int generate(AST ast, stringstream& out)
     else if (is(current, "="))
     {
         lines += generate(ast->childs->next, out);
-        out <<  "SetVar " <<  ast->childs->str_value << "\n";
+        out << "SetVar " << ast->childs->str_value << "\n";
         lines += 1;
     }
     else if (is(current, "u-"))
     {
         lines += generate(ast->childs, out);
-        out <<  "NegaNb\n";
+        out << "NegaNb\n";
         lines += 1;
     }
     else if (is(current, "!"))
     {
         lines += generate(ast->childs, out);
-        out <<  "Not\n";
+        out << "Not\n";
         lines += 1;
     }
     else if (is(current, "++x"))
     {
 
-        out <<  "GetVar " <<  ast->childs->str_value << "\n";
-        out <<  "CsteNb 1\n";
-        out <<  "AddiNb\n";
-        out <<  "Copy\n";
-        out <<  "SetVar " <<  ast->childs->str_value << "\n";
+        out << "GetVar " << ast->childs->str_value << "\n";
+        out << "CsteNb 1\n";
+        out << "AddiNb\n";
+        out << "Copy\n";
+        out << "SetVar " << ast->childs->str_value << "\n";
 
         lines += 5;
     }
     else if (is(current, "--x"))
     {
-        out <<  "GetVar " << ast->childs->str_value << "\n";
-        out <<  "CsteNb 1\n";
-        out <<  "SubsNb\n";
-        out <<  "Copy\n";
-        out <<  "SetVar " << ast->childs->str_value << "\n";
+        out << "GetVar " << ast->childs->str_value << "\n";
+        out << "CsteNb 1\n";
+        out << "SubsNb\n";
+        out << "Copy\n";
+        out << "SetVar " << ast->childs->str_value << "\n";
 
         lines += 5;
     }
     else if (is(current, "x++"))
     {
-        out <<  "GetVar " << ast->childs->str_value << "\n";
-        out <<  "Copy\n";
-        out <<  "CsteNb 1\n";
-        out <<  "AddiNb\n";
-        out <<  "SetVar " << ast->childs->str_value << "\n";
+        out << "GetVar " << ast->childs->str_value << "\n";
+        out << "Copy\n";
+        out << "CsteNb 1\n";
+        out << "AddiNb\n";
+        out << "SetVar " << ast->childs->str_value << "\n";
         lines += 5;
     }
     else if (is(current, "x--"))
     {
-        out <<  "GetVar " << ast->childs->str_value << "\n";
-        out <<  "Copy\n";
-        out <<  "CsteNb 1\n";
-        out <<  "SubsNb\n";
-        out <<  "SetVar " << ast->childs->str_value << "\n";
+        out << "GetVar " << ast->childs->str_value << "\n";
+        out << "Copy\n";
+        out << "CsteNb 1\n";
+        out << "SubsNb\n";
+        out << "SetVar " << ast->childs->str_value << "\n";
         lines += 5;
     }
     else if (is(current, "call"))
@@ -223,25 +223,24 @@ int generate(AST ast, stringstream& out)
     }
     else if (is(current, "number"))
     {
-        out <<  "CsteNb " <<  ast->number_value << "\n";
+        out << "CsteNb " << ast->number_value << "\n";
         lines += 1;
     }
     else if (is(current, "bool"))
     {
-        out <<  "CsteBo " << ( ast->boolean_value ? "true" : "false" ) << "\n";
+        out << "CsteBo " << (ast->boolean_value ? "true" : "false") << "\n";
         lines += 1;
-         
     }
     else if (is(current, "var"))
     {
-        out <<  "GetVar " << ast->str_value << "\n";
+        out << "GetVar " << ast->str_value << "\n";
         lines += 1;
     }
     else if (is(current, "constant"))
     {
         if (is(ast->str_value, "NaN") || is(ast->str_value, "Infinity"))
         {
-            out <<  "CsteNb " << ast->str_value << "\n";
+            out << "CsteNb " << ast->str_value << "\n";
             lines += 1;
         }
         else if (is(ast->str_value, "undefined"))
@@ -254,8 +253,8 @@ int generate(AST ast, stringstream& out)
 void compile(AST ast)
 {
     FILE *f = fopen("out.js.asm", "w");
-    stringstream result; 
+    stringstream result;
     generate(ast, result);
-    fputs(result.str().c_str() , f); 
+    fputs(result.str().c_str(), f);
     fclose(f);
 }

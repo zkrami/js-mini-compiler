@@ -8,7 +8,8 @@ int is(const char *s, const char *type)
 int generate(AST ast, FILE *out)
 {
 
-    if(ast == NULL) return 0 ; 
+    if (ast == NULL)
+        return 0;
     /*
     main  programme command if if_else do_while while for function return   decl_args arguements
     + - * / || && == != < > >= <= () = u- ! ++x --x  x++ x-- call number bool var constant
@@ -18,17 +19,17 @@ int generate(AST ast, FILE *out)
     int lines = 0;
     if (is(current, "main"))
     {
-        lines += generate(ast->childs , out); 
+        lines += generate(ast->childs, out);
         fprintf(out, "Halt\n");
     }
     else if (is(current, "programme"))
     {
-        lines += generate(ast->childs , out); 
-        lines += generate(ast->childs->next , out); 
+        lines += generate(ast->childs, out);
+        lines += generate(ast->childs->next, out);
     }
     else if (is(current, "command"))
     {
-        lines += generate(ast->childs , out); 
+        lines += generate(ast->childs, out);
     }
     else if (is(current, "if"))
     {
@@ -74,6 +75,10 @@ int generate(AST ast, FILE *out)
     }
     else if (is(current, "/"))
     {
+        lines += generate(ast->childs, out);
+        lines += generate(ast->childs->next, out);
+        fprintf(out, "DiviNb\n");
+        lines += 1;
     }
     else if (is(current, "||"))
     {
@@ -83,26 +88,49 @@ int generate(AST ast, FILE *out)
     }
     else if (is(current, "=="))
     {
+        lines += generate(ast->childs, out);
+        lines += generate(ast->childs->next, out);
+        fprintf(out, "Equals\n");
+        lines += 1;
     }
     else if (is(current, "!="))
     {
+        lines += generate(ast->childs, out);
+        lines += generate(ast->childs->next, out);
+        fprintf(out, "NotEql\n");
+        lines += 1;
     }
     else if (is(current, "<"))
     {
+        lines += generate(ast->childs, out);
+        lines += generate(ast->childs->next, out);
+        fprintf(out, "LoStNb\n");
+        lines += 1;
     }
     else if (is(current, ">"))
     {
+        lines += generate(ast->childs, out);
+        lines += generate(ast->childs->next, out);
+        fprintf(out, "GrStNb\n");
+        lines += 1;
     }
     else if (is(current, ">="))
     {
+        lines += generate(ast->childs, out);
+        lines += generate(ast->childs->next, out);
+        fprintf(out, "GrEqNb\n");
+        lines += 1;
     }
     else if (is(current, "<="))
     {
+        lines += generate(ast->childs, out);
+        lines += generate(ast->childs->next, out);
+        fprintf(out, "LoEqNb\n");
+        lines += 1;
     }
     else if (is(current, "()"))
     {
-        lines += generate(ast->childs , out);
-
+        lines += generate(ast->childs, out);
     }
     else if (is(current, "="))
     {
@@ -115,6 +143,9 @@ int generate(AST ast, FILE *out)
     }
     else if (is(current, "!"))
     {
+        lines += generate(ast->childs, out);
+        fprintf(out, "Not\n");
+        lines += 1;
     }
     else if (is(current, "++x"))
     {
@@ -150,7 +181,7 @@ int generate(AST ast, FILE *out)
 
 void compile(AST ast)
 {
-    FILE *f = fopen( "out.js.asm" , "w");
+    FILE *f = fopen("out.js.asm", "w");
     generate(ast, f);
     fclose(f);
 }

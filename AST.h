@@ -5,7 +5,7 @@
 struct _tree {
   char* car;           
   int boolean_value;
-  char* var_name; 
+  char* str_value; 
   double number_value; 
   struct _tree* childs;    	
   struct _tree* next;  

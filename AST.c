@@ -119,7 +119,7 @@ AST newVariableLeafAST(char* val){
   AST t=(struct _tree*) malloc(sizeof(struct _tree));  
   if (t!=NULL){	
     t->car = "var"; 
-    t->var_name=val;    
+    t->str_value=val;    
   } 
   return t; 
   
@@ -129,7 +129,7 @@ AST newConstantLeafAST(char* val){
   AST t=(struct _tree*) malloc(sizeof(struct _tree));  
   if (t!=NULL){	
     t->car = "constant"; 
-    t->var_name=val;    
+    t->str_value=val;    
   } 
   return t; 
   

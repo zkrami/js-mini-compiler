@@ -13,7 +13,7 @@ int generate(AST ast, FILE *out)
     /*
     main  programme command if if_else do_while while for function return   decl_args arguements
     + - * / || && == != < > >= <= () = u- ! ++x --x  x++ x-- call number bool var constant
- */
+     */
     const char *current = ast->car;
 
     int lines = 0;
@@ -134,6 +134,9 @@ int generate(AST ast, FILE *out)
     }
     else if (is(current, "="))
     {
+        lines += generate(ast->childs->next, out);
+        fprintf(out, "SetVar %s\n", ast->childs->str_value);
+        lines += 1;
     }
     else if (is(current, "u-"))
     {
@@ -172,6 +175,8 @@ int generate(AST ast, FILE *out)
     }
     else if (is(current, "var"))
     {
+        fprintf(out, "GetVar %s\n", ast->str_value);
+        lines += 1;
     }
     else if (is(current, "constant"))
     {

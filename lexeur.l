@@ -44,7 +44,7 @@ return { printf("lex::return  %s\n", yytext); return  RETURN; }
 "--" { printf("lex::decrementation %s\n", yytext); return  DECREMENTATION; }
 \/\*([^*]|\*+[^/])*\*+\/ { printf("lex::bloc commentaire %s\n", yytext);  }
 \/\/.* { printf("lex::linge commentaire %s\n", yytext);  }
-[ \t\n] { ; } /* ignore space, tab, and line return */
+[ \t\n\r] { ; } /* ignore space, tab, and line return */
 . { printf("lex::char %s\n",yytext); return yytext[0]; } /* other one-char = token, ex. '+' */
 
 %%

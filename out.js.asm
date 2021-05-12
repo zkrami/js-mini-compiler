@@ -1,10 +1,20 @@
-CsteNb 10.000000
+CsteNb 5.000000
+SetVar x
 GetVar x
-MultNb
-CsteNb 2.000000
-CsteNb 3.000000
-MultNb
-CsteNb 2.000000
+Copy
+CsteNb 1
 AddiNb
 SetVar x
+GetVar x
+Copy
+CsteNb 1
+AddiNb
+SetVar x
+SetVar y
+GetVar x
+CsteNb 1
+AddiNb
+Copy
+SetVar x
+SetVar z
 Halt

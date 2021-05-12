@@ -17,3 +17,10 @@ Pour tester le parseur tout seul.
 Après avoir fait un build. 
 `./parseur parser_tests/functions.js`
 
+### Compilateur
+Pour tester le compilatuer.
+Après avoir fait un build. 
+`./compiler compiler_test/variable1-0.js`
+Le résultat doit être dans le fichier `out.js.asm` 
+
+

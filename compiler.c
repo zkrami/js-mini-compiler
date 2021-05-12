@@ -152,15 +152,42 @@ int generate(AST ast, FILE *out)
     }
     else if (is(current, "++x"))
     {
+
+        fprintf(out, "GetVar %s\n", ast->childs->str_value);
+        fprintf(out, "CsteNb 1\n");
+        fprintf(out, "AddiNb\n");
+        fprintf(out, "Copy\n");
+        fprintf(out, "SetVar %s\n", ast->childs->str_value);
+
+        lines += 5;
     }
     else if (is(current, "--x"))
     {
+        fprintf(out, "GetVar %s\n", ast->childs->str_value);
+        fprintf(out, "CsteNb 1\n");
+        fprintf(out, "SubsNb\n");
+        fprintf(out, "Copy\n");
+        fprintf(out, "SetVar %s\n", ast->childs->str_value);
+
+        lines += 5;
     }
     else if (is(current, "x++"))
     {
+        fprintf(out, "GetVar %s\n", ast->childs->str_value);
+        fprintf(out, "Copy\n");
+        fprintf(out, "CsteNb 1\n");
+        fprintf(out, "AddiNb\n");
+        fprintf(out, "SetVar %s\n", ast->childs->str_value);
+        lines += 5;
     }
-    else if (is(current, "x++"))
+    else if (is(current, "x--"))
     {
+        fprintf(out, "GetVar %s\n", ast->childs->str_value);
+        fprintf(out, "Copy\n");
+        fprintf(out, "CsteNb 1\n");
+        fprintf(out, "SubsNb\n");
+        fprintf(out, "SetVar %s\n", ast->childs->str_value);
+        lines += 5;
     }
     else if (is(current, "call"))
     {
@@ -180,6 +207,13 @@ int generate(AST ast, FILE *out)
     }
     else if (is(current, "constant"))
     {
+        if (is(ast->str_value, "NaN") || is(ast->str_value , "Infinity"))
+        {
+            fprintf(out, "CsteNb %s\n", ast->str_value);
+            lines += 1; 
+        }else if(is(ast->str_value, "undefined")){
+
+        }
     }
     return lines;
 }

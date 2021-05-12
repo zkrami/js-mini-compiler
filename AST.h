@@ -1,6 +1,6 @@
 #ifndef _AST_H_
 #define _AST_H_
-
+#include <string.h>
 /* unary-and-binary tree structure */
 struct _tree {
   char* car;           

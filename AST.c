@@ -83,7 +83,6 @@ void printAST(AST t)
    if(t!=NULL)
    { 
      printf(" %s ", t->car);
-     
      AST c = t->childs; 
      while(c !=NULL)
      {
@@ -129,7 +128,7 @@ AST newVariableLeafAST(char* val){
 AST newConstantLeafAST(char* val){
   AST t=(struct _tree*) malloc(sizeof(struct _tree));  
   if (t!=NULL){	
-    t->car = "var"; 
+    t->car = "constant"; 
     t->var_name=val;    
   } 
   return t; 

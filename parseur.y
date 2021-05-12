@@ -6,14 +6,19 @@
     #include "AST.h" 
     int yylex(void); /* -Wall : avoid implicit call */
     int yyerror(AST* pt, const char*); /* same for bison */
-    #define NULL 0
 %}
 %parse-param {AST* pt}
 %union {
     AST node;
     double number;
+    int boolean;
+    char* str; 
 };
 %type <node> programme  command identifiant expression decl_args arguements
+%type <str> VARIABLE CONSTANT
+%type <number> NOMBRE
+%type <boolean> BOOL
+
 
 
 %token VARIABLE
@@ -38,7 +43,7 @@
 %token WHILE 
 %token FOR 
 %token FUNCTION
-%token UNDEFINED
+%token CONSTANT
 %token RETURN
 
 %right AFFECTATION      
@@ -84,7 +89,7 @@ arguements:
 | expression  { $$ = newBinaryAST("arguements" , $1 , NULL); }
 | expression ',' arguements   { $$ = newBinaryAST("arguements" , $1 , $3); } 
 
-identifiant: VARIABLE { $$ = newConstantLeafAST("");  }
+identifiant: VARIABLE { $$ = newVariableLeafAST($1);  }
 
 expression:
 expression '+' expression { $$ = newBinaryAST("+" , $1 , $3); }
@@ -108,10 +113,10 @@ expression '+' expression { $$ = newBinaryAST("+" , $1 , $3); }
 |  identifiant INCREMENTATION { $$ = newUnaryAST("x++" , $1 ); }
 |  identifiant DECREMENTATION { $$ = newUnaryAST("x--" , $1 ); }
 | identifiant '('arguements')' { $$ = newBinaryAST("call" , $1 , $3 ); }
-| NOMBRE { $$ = newNumberLeafAST(0);  }
-| BOOL { $$ = newBooleanLeafAST(0);  }
+| NOMBRE { $$ = newNumberLeafAST($1);  }
+| BOOL { $$ = newBooleanLeafAST($1);  }
 | identifiant { $$ = $1; }
-| UNDEFINED  { $$ = newConstantLeafAST("undefined");  }
+| CONSTANT  { $$ = newConstantLeafAST($1);  }
 
 
 

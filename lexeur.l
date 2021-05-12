@@ -15,10 +15,16 @@ int parseBool(const char* st){
     
     return strcmp(st , "true") == 0 ? 1 : 0; 
 }
-
+char* newString(const char* st) {
+    int n = strlen(st); 
+    char* res = (char *) malloc(  sizeof(char) * (n + 1) );
+    strcpy(res , st); 
+    res[n] = 0 ; 
+    return res; 
+}
 %}
 %%
-NaN|Infinity|undefined  {printf("lex::Constant %s\n",yytext); yylval.str = yytext;  return CONSTANT; }
+NaN|Infinity|undefined  {printf("lex::Constant %s\n",yytext); yylval.str = newString(yytext);  return CONSTANT; }
 ((([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(e-?[0-9]+)?) { yylval.number = parseNumber(yytext);   printf("lex::NOMBRE %s\n",yytext); return NOMBRE; }
 ;  { printf("lex::PT_VIRG %s\n", yytext); return PT_VIRG; }
 "="     { printf("lex::afectation %s\n", yytext); return AFFECTATION; } 
@@ -39,7 +45,7 @@ while  { printf("lex::while  %s\n", yytext); return  WHILE; }
 for  { printf("lex::for  %s\n", yytext); return  FOR; }
 function { printf("lex::function  %s\n", yytext); return  FUNCTION; }
 return { printf("lex::return  %s\n", yytext); return  RETURN; }
-[a-zA-Z_]+ { printf("lex::variable %s\n", yytext); yylval.str = yytext;   return VARIABLE; }
+[a-zA-Z_]+ { printf("lex::variable %s\n", yytext); yylval.str = newString(yytext);    return VARIABLE; }
 "++" { printf("lex::incrementation %s\n", yytext); return  INCREMENTATION; }
 "--" { printf("lex::decrementation %s\n", yytext); return  DECREMENTATION; }
 \/\*([^*]|\*+[^/])*\*+\/ { printf("lex::bloc commentaire %s\n", yytext);  }

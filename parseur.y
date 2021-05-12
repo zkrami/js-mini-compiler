@@ -89,7 +89,7 @@ arguements:
 | expression  { $$ = newBinaryAST("arguements" , $1 , NULL); }
 | expression ',' arguements   { $$ = newBinaryAST("arguements" , $1 , $3); } 
 
-identifiant: VARIABLE { $$ = newVariableLeafAST($1);  }
+identifiant: VARIABLE { $$ = newVariableLeafAST($1);   }
 
 expression:
 expression '+' expression { $$ = newBinaryAST("+" , $1 , $3); }
@@ -105,7 +105,7 @@ expression '+' expression { $$ = newBinaryAST("+" , $1 , $3); }
 | expression  SUP_EGAL expression { $$ = newBinaryAST(">=" , $1 , $3); }
 | expression  INF_EGAL expression { $$ = newBinaryAST("<=" , $1 , $3); }
 | '(' expression ')'  { $$ = newUnaryAST("()" , $2 ); }
-|  identifiant AFFECTATION expression { $$ = newBinaryAST("=" , $1 , $3 ); }
+|  identifiant AFFECTATION expression { $$ = newBinaryAST("=" , $1 , $3 );  }
 | '-' expression %prec MOINSU { $$ = newUnaryAST("u-" , $2 ); }
 | NEGATION  expression { $$ = newUnaryAST("!" , $2 ); }
 | INCREMENTATION identifiant { $$ = newUnaryAST("++x" , $2 ); }

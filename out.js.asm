@@ -1,4 +1,4 @@
-CsteNb 5.000000
+CsteNb 5
 SetVar x
 GetVar x
 Copy

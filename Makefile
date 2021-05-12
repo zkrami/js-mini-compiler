@@ -1,10 +1,15 @@
 CFLAGS = -g -Wall
+CPPFLAGS = -g -Wall
 YACC = bison -d 
+CC = gcc
+CSRCS = AST.c parseur.tab.c lex.yy.c
+CPPSRC = compiler.cpp main.cpp
+OBJS = $(CSRCS:.c=.o)  $(CPPSRC:.cpp=.o) 
 
-all:  compiler 
+all: compiler 
 
 clean:
-	rm -f parseur *.tab.c *.tab.h lex.yy.c *.yy.c
+	rm -f compiler parseur *.tab.c *.tab.h lex.yy.c *.yy.c *.o 
 
 
 
@@ -18,5 +23,19 @@ lexer: grammer
 parseur: lexer
 	 gcc $(CFLAGS) -o parseur  main.c AST.c parseur.tab.c lex.yy.c
 
-compiler: lexer
-	gcc $(CFLAGS) -o compiler  main.c AST.c parseur.tab.c lex.yy.c compiler.c
+parseur.tab.o: 	
+	gcc $(CFLAGS) -c parseur.tab.c -o parseur.tab.o
+
+lex.yy.o: 	
+	gcc $(CFLAGS) -c lex.yy.c -o lex.yy.o
+
+%.o : %.c
+	gcc $(CFLAGS) -c $< -o $@
+
+
+%.o : %.cpp
+	g++ $(CPPFLAGS) -c $< -o $@
+
+compiler:lexer $(OBJS)
+	g++ $(CPPFLAGS)  -o compiler $(OBJS)
+	 

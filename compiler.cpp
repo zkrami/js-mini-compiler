@@ -1,11 +1,11 @@
-#include "compiler.h"
+#include "compiler.hpp"
 
 int is(const char *s, const char *type)
 {
     return !strcmp(s, type);
 }
 
-int generate(AST ast, FILE *out)
+int generate(AST ast, stringstream& out)
 {
 
     if (ast == NULL)
@@ -20,7 +20,7 @@ int generate(AST ast, FILE *out)
     if (is(current, "main"))
     {
         lines += generate(ast->childs, out);
-        fprintf(out, "Halt\n");
+        out <<  "Halt\n" ; 
     }
     else if (is(current, "programme"))
     {
@@ -36,6 +36,35 @@ int generate(AST ast, FILE *out)
     }
     else if (is(current, "if_else"))
     {
+
+        //  IF '(' expression ')' command ELSE command  { $$= newTernaryAST("if_else" , $3 , $5 , $7 ); }
+
+
+         // @Cast ToBool
+        lines += generate(ast->childs, out);
+        // fprintf(out, "ConJmp \n" );
+
+
+        /*
+
+            ConJmp 3
+            CsteBo False
+            SetVar y
+            Jump 8
+
+
+            GetVar x
+            TypeOf
+            Case
+            Jump 1
+            BoToNb
+            CsteNb 1
+            AddiNb
+            SetVar y
+            Halt
+        */
+       
+
     }
     else if (is(current, "do_while"))
     {
@@ -56,28 +85,28 @@ int generate(AST ast, FILE *out)
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        fprintf(out, "AddiNb\n");
+        out << "AddiNb\n"; 
         lines += 1;
     }
     else if (is(current, "-"))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        fprintf(out, "SubsNb\n");
+        out << "SubsNb\n" ; 
         lines += 1;
     }
     else if (is(current, "*"))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        fprintf(out, "MultNb\n");
+        out << "MultNb\n" ; 
         lines += 1;
     }
     else if (is(current, "/"))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        fprintf(out, "DiviNb\n");
+        out <<  "DiviNb\n" ; 
         lines += 1;
     }
     else if (is(current, "||"))
@@ -90,42 +119,42 @@ int generate(AST ast, FILE *out)
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        fprintf(out, "Equals\n");
+        out <<  "Equals\n" ;
         lines += 1;
     }
     else if (is(current, "!="))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        fprintf(out, "NotEql\n");
+        out << "NotEql\n" ; 
         lines += 1;
     }
     else if (is(current, "<"))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        fprintf(out, "LoStNb\n");
+        out << "LoStNb\n" ; 
         lines += 1;
     }
     else if (is(current, ">"))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        fprintf(out, "GrStNb\n");
+         out <<  "GrStNb\n" ; 
         lines += 1;
     }
     else if (is(current, ">="))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        fprintf(out, "GrEqNb\n");
+        out <<  "GrEqNb\n";
         lines += 1;
     }
     else if (is(current, "<="))
     {
         lines += generate(ast->childs, out);
         lines += generate(ast->childs->next, out);
-        fprintf(out, "LoEqNb\n");
+        out <<  "LoEqNb\n";
         lines += 1;
     }
     else if (is(current, "()"))
@@ -135,58 +164,58 @@ int generate(AST ast, FILE *out)
     else if (is(current, "="))
     {
         lines += generate(ast->childs->next, out);
-        fprintf(out, "SetVar %s\n", ast->childs->str_value);
+        out <<  "SetVar " <<  ast->childs->str_value << "\n";
         lines += 1;
     }
     else if (is(current, "u-"))
     {
         lines += generate(ast->childs, out);
-        fprintf(out, "NegaNb\n");
+        out <<  "NegaNb\n";
         lines += 1;
     }
     else if (is(current, "!"))
     {
         lines += generate(ast->childs, out);
-        fprintf(out, "Not\n");
+        out <<  "Not\n";
         lines += 1;
     }
     else if (is(current, "++x"))
     {
 
-        fprintf(out, "GetVar %s\n", ast->childs->str_value);
-        fprintf(out, "CsteNb 1\n");
-        fprintf(out, "AddiNb\n");
-        fprintf(out, "Copy\n");
-        fprintf(out, "SetVar %s\n", ast->childs->str_value);
+        out <<  "GetVar " <<  ast->childs->str_value << "\n";
+        out <<  "CsteNb 1\n";
+        out <<  "AddiNb\n";
+        out <<  "Copy\n";
+        out <<  "SetVar " <<  ast->childs->str_value << "\n";
 
         lines += 5;
     }
     else if (is(current, "--x"))
     {
-        fprintf(out, "GetVar %s\n", ast->childs->str_value);
-        fprintf(out, "CsteNb 1\n");
-        fprintf(out, "SubsNb\n");
-        fprintf(out, "Copy\n");
-        fprintf(out, "SetVar %s\n", ast->childs->str_value);
+        out <<  "GetVar " << ast->childs->str_value << "\n";
+        out <<  "CsteNb 1\n";
+        out <<  "SubsNb\n";
+        out <<  "Copy\n";
+        out <<  "SetVar " << ast->childs->str_value << "\n";
 
         lines += 5;
     }
     else if (is(current, "x++"))
     {
-        fprintf(out, "GetVar %s\n", ast->childs->str_value);
-        fprintf(out, "Copy\n");
-        fprintf(out, "CsteNb 1\n");
-        fprintf(out, "AddiNb\n");
-        fprintf(out, "SetVar %s\n", ast->childs->str_value);
+        out <<  "GetVar " << ast->childs->str_value << "\n";
+        out <<  "Copy\n";
+        out <<  "CsteNb 1\n";
+        out <<  "AddiNb\n";
+        out <<  "SetVar " << ast->childs->str_value << "\n";
         lines += 5;
     }
     else if (is(current, "x--"))
     {
-        fprintf(out, "GetVar %s\n", ast->childs->str_value);
-        fprintf(out, "Copy\n");
-        fprintf(out, "CsteNb 1\n");
-        fprintf(out, "SubsNb\n");
-        fprintf(out, "SetVar %s\n", ast->childs->str_value);
+        out <<  "GetVar " << ast->childs->str_value << "\n";
+        out <<  "Copy\n";
+        out <<  "CsteNb 1\n";
+        out <<  "SubsNb\n";
+        out <<  "SetVar " << ast->childs->str_value << "\n";
         lines += 5;
     }
     else if (is(current, "call"))
@@ -194,25 +223,29 @@ int generate(AST ast, FILE *out)
     }
     else if (is(current, "number"))
     {
-        fprintf(out, "CsteNb %lf\n", ast->number_value);
+        out <<  "CsteNb " <<  ast->number_value << "\n";
         lines += 1;
     }
     else if (is(current, "bool"))
     {
+        out <<  "CsteBo " << ( ast->boolean_value ? "true" : "false" ) << "\n";
+        lines += 1;
+         
     }
     else if (is(current, "var"))
     {
-        fprintf(out, "GetVar %s\n", ast->str_value);
+        out <<  "GetVar " << ast->str_value << "\n";
         lines += 1;
     }
     else if (is(current, "constant"))
     {
-        if (is(ast->str_value, "NaN") || is(ast->str_value , "Infinity"))
+        if (is(ast->str_value, "NaN") || is(ast->str_value, "Infinity"))
         {
-            fprintf(out, "CsteNb %s\n", ast->str_value);
-            lines += 1; 
-        }else if(is(ast->str_value, "undefined")){
-
+            out <<  "CsteNb " << ast->str_value << "\n";
+            lines += 1;
+        }
+        else if (is(ast->str_value, "undefined"))
+        {
         }
     }
     return lines;
@@ -221,6 +254,8 @@ int generate(AST ast, FILE *out)
 void compile(AST ast)
 {
     FILE *f = fopen("out.js.asm", "w");
-    generate(ast, f);
+    stringstream result; 
+    generate(ast, result);
+    fputs(result.str().c_str() , f); 
     fclose(f);
 }

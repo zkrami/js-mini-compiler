@@ -5,3 +5,4 @@
 parseur
 compiler
 *.js.asm
+*.o

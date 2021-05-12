@@ -4,12 +4,12 @@
 /* usage: ./main < input.txt */
 #include <stdio.h>
 #include <stdlib.h>
-#include "AST.h"
-#include "compiler.h"
+
+#include "compiler.hpp"
 extern FILE *yyin;
 
+extern "C" int yyparse(AST* pt);
 
-int yyparse(AST* pt);
 
 int main(int argc, char **argv)
 {

@@ -41,11 +41,11 @@ Le résultat doit être dans le fichier `out.js.asm`
 - Objects 
 - Exceptions 
 
-##generation AST 
+## Generation AST 
 
 
-_la structure de données utilisé pour la generation d'AST est un arbre dont chaque noeud pointe sur son fils (chils) et ses freres(next) 
-_le choix de cet arbre est en relation avec les instruction qui peuvent avoir plusieurs branches , on a essayer de le genaraliser a fin qu'il soit generé par n'importe quelle instruction 
+La structure de données utilisé pour la generation d'AST est un arbre dont chaque noeud pointe sur son fils (chils) et ses freres(next) 
+le choix de cet arbre est en relation avec les instruction qui peuvent avoir plusieurs branches , on a essayer de le genaraliser a fin qu'il soit generé par n'importe quelle instruction 
 exempe :
 la boulce for :
 sa grammaire : for(expression;expression;expression){ program}

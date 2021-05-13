@@ -74,7 +74,6 @@ void freeAST(AST t)
     if(t->str_value != NULL){
         free(t->str_value); 
     }
-       
     free(t);
   }
 }

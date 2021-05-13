@@ -68,7 +68,7 @@ command { $$= newUnaryAST("programme" , $1 ) ;  }
 ;
 
 command:
-expression PT_VIRG { $$= newUnaryAST("command" , $1);  } 
+expression PT_VIRG { $$= newUnaryAST("commandfs" , $1);  } 
 | PT_VIRG  { $$= newUnaryAST(";" , NULL ) ;  } 
 | '{' programme '}' { $$= newUnaryAST("command" , $2 ) ;  } 
 | IF '(' expression ')' command ELSE command  { $$= newTernaryAST("if_else" , $3 , $5 , $7 ) ;  } 

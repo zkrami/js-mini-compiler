@@ -111,9 +111,44 @@ int generate(AST ast, stringstream &out)
     }
     else if (is(current, "||"))
     {
+        // @Cast ToBool
+        
+        stringstream temp1;
+        int tlines = generate(ast->childs->next, temp1);
+
+
+        lines += generate(ast->childs, out);        
+        out << "ConJmp 2\n"; 
+        out << "CsteBo true\n"; 
+        out << "Jump " << tlines << "\n"; 
+        out << temp1.str() ; 
+
+        lines += 3;  // Jump + ConJmp + Cast True 
+        lines += tlines; 
+
     }
     else if (is(current, "&&"))
     {
+        // @Cast ToBool
+
+         
+        stringstream temp1;
+        int tlines = generate(ast->childs->next, temp1);
+
+
+        lines += generate(ast->childs, out);       
+        tlines += 1; // JUMP  
+        
+        out << "ConJmp " << tlines << "\n"; 
+        out << temp1.str() ; 
+        out << "Jump 1\n"; 
+        out << "CsteBo false\n"; 
+        
+        lines += 2;  //  ConJmp + Cst False
+        lines += tlines; 
+        
+
+
     }
     else if (is(current, "=="))
     {

@@ -68,6 +68,15 @@ int generate(AST ast, stringstream &out)
     }
     else if (is(current, "do_while"))
     {
+        // DO command WHILE '(' expression ')'    { $$ = newBinaryAST("do_while" , $2 , $5); } 
+        int tlines = generate(ast->childs, out);        
+        tlines +=  generate(ast->childs->next , out); 
+        out << "ConJmp 1\n";
+        tlines += 1; // ConJump 
+        out << "Jump -" << tlines +1  << "\n";  //  PC + 1 
+
+        lines += tlines; 
+
     }
     else if (is(current, "while"))
     {

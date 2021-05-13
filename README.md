@@ -45,13 +45,20 @@ Le résultat doit être dans le fichier `out.js.asm`
 
 
 La structure de données utilisé pour la generation d'AST est un arbre dont chaque noeud pointe sur son fils (chils) et ses freres(next) 
-le choix de cet arbre est en relation avec les instruction qui peuvent avoir plusieurs branches , on a essayer de le genaraliser a fin qu'il soit generé par n'importe quelle instruction 
-exempe :
+le choix de cet arbre est en relation avec les instruction qui peuvent avoir plusieurs branches, on a essayer de le genaraliser a fin qu'il soit generé par n'importe quelle instruction 
+
+exemple :
+
 la boulce for :
-sa grammaire : for(expression;expression;expression){ program}
+
+sa grammaire : `for(expression;expression;expression){ program } `
+
 l'arbre généré est un abre quinaire.
+
 l'instruction conditionnel if:
-if(expression){program}
-l'abre généré est binaire 
+
+`if (expression) { program }` 
+
+l'abre généré est binaire. 
 
 

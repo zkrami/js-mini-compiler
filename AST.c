@@ -68,11 +68,11 @@ void freeAST(AST t)
     AST c = t->childs; 
     while(c!=NULL)
     {
-        freeAST(c);
-        if(c->var_name != 0){
-          free(c->var_name); 
-        }
+        freeAST(c);      
         c=c->next;
+    }
+    if(t->var_name != 0){
+        free(t->var_name); 
     }
        
     free(t);

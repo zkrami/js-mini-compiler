@@ -40,3 +40,16 @@ Le résultat doit être dans le fichier `out.js.asm`
 - Hosting
 - Objects 
 - Exceptions 
+
+##generation AST 
+_la structure de données utilisé pour la generation d'AST est un arbre dont chaque noeud pointe sur son fils (chils) et ses freres(next) 
+_le choix de cet arbre est en relation avec les instruction qui peuvent avoir plusieurs branches , on a essayer de le genaraliser a fin qu'il soit generé par n'importe quelle instruction 
+exempe :
+la boulce for :
+sa grammaire : for(expression;expression;expression){ program}
+l'arbre généré est un abre quinaire.
+l'instruction conditionnel if:
+if(expression){program}
+l'abre généré est binaire 
+
+
